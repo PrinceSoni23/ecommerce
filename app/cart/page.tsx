@@ -1,7 +1,7 @@
 'use client';
 
 import { useCart } from "../context/CartContext";
-
+import Image from "next/image";
 // import { useCart } from '@/context/CartContext';
 
 const CartPage = () => {
@@ -21,7 +21,7 @@ const CartPage = () => {
             {cartItems.map((item) => (
               <li key={item.title} className="flex items-center justify-between bg-white p-4 rounded shadow">
                 <div className="flex items-center gap-4">
-                  <img src={item.image} alt={item.title} className="w-16 h-16 object-cover rounded" />
+                  <Image src={item.image} alt={item.title} width={64} height={64} className="w-16 h-16 object-cover rounded" />
                   <div>
                     <h2 className="text-lg font-semibold">{item.title}</h2>
                     <p className="text-gray-600">${item.price}</p>

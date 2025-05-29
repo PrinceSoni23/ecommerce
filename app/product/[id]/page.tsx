@@ -3,6 +3,7 @@ import { useCart } from "@/app/context/CartContext";
 import { useParams } from "next/navigation";
 // import { useCart } from "../../../context/CartContext";
 import {  useState } from "react";
+import Image from "next/image";
 
 const dummyProducts = [
   {
@@ -35,7 +36,7 @@ export default function ProductDetailPage() {
   return (
     <div className="p-6 flex flex-col lg:flex-row gap-8 bg-gray-50 min-h-screen">
       <div className="w-full lg:w-1/2">
-        <img src={product.image} alt={product.title} className="rounded-lg w-full" />
+        <Image src={product.image} alt={product.title} className="rounded-lg w-full" />
       </div>
       <div className="w-full lg:w-1/2 text-black">
         <h1 className="text-3xl font-bold mb-4">{product.title}</h1>

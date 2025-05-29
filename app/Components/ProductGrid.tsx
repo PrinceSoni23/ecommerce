@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 type Product = {
   title: string;
@@ -21,9 +22,11 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, handleAddToCart }) 
           key={index}
           className={`bg-white shadow rounded p-4 flex flex-col transform transition duration-500 ease-in-out hover:shadow-2xl hover:-translate-y-1 animate-fade-in ${product.title === 'Smartphone' ? 'col-span-1 lg:col-span-2' : ''}`}
         >
-          <img
+          <Image
             src={product.image}
             alt={product.title}
+            width={200}
+            height={200}
             className="h-40 object-contain mb-4 transition-transform duration-500 ease-in-out hover:scale-105"
           />
           <h3 className="text-lg font-semibold text-black">{product.title}</h3>
