@@ -1,103 +1,91 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import Header from './Components/Header';
+import ProductGrid from './Components/ProductGrid';
+import Footer from './Components/Footer';
+
+const products = [
+  { title: 'Running Shoes', price: 99, image: '/shoe.avif', category: 'Clothing', description: 'Comfortable running shoes', rating: 4 },
+  { title: 'Wireless Headphones', price: 199, image: '/headphones.jpg', category: 'Electronics', description: 'High-quality wireless headphones', rating: 5 },
+  { title: 'Backpack', price: 129, image: '/bag.jpg', category: 'Clothing', description: 'Durable and stylish backpack', rating: 4 },
+  { title: 'Smartwatch', price: 249, image: '/smartwatch.webp', category: 'Electronics', description: 'Feature-rich smartwatch', rating: 4 },
+  { title: 'Sunglasses', price: 149, image: '/sunglasses.avif', category: 'Clothing', description: 'Trendy sunglasses for all occasions', rating: 3 },
+  { title: 'Digital Camera', price: 499, image: '/camera.jpg', category: 'Electronics', description: 'Capture moments with this digital camera', rating: 5 },
+  { title: 'T-shirt', price: 29, image: '/t.jpg', category: 'Clothing', description: 'Soft cotton t-shirt', rating: 4 },
+  { title: 'Smartphone', price: 699, image: '/smartphone.jpg', category: 'Electronics', rating: 4, description: 'Lorem ipsum dolor amet, consectetur euisagend. Category Electronics' },
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [category, setCategory] = useState('All');
+  const [price, setPrice] = useState(1000);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(true);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 500); // loader duration
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleAddToCart = (product: { title: any; }) => {
+    alert(`Added ${product.title} to cart`);
+  };
+
+  const filteredProducts = products.filter(product => {
+    const matchesCategory = category === 'All' || product.category === category;
+    const matchesPrice = product.price <= price;
+    const matchesSearch = searchQuery === '' || product.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesPrice && matchesSearch;
+  });
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-yellow-400">
+        <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+
+      <main className="flex-1 p-4 sm:p-6 bg-gray-100 flex flex-col lg:flex-row">
+        <aside className="w-full lg:w-64 mb-4 lg:mb-0 lg:pr-4">
+          <div className="bg-white p-4 rounded shadow">
+            <h2 className="text-lg font-semibold mb-2 text-black">Category</h2>
+            {['All', 'Electronics', 'Clothing', 'Home'].map((cat) => (
+              <div key={cat} className="text-black">
+                <input
+                  type="radio"
+                  name="category"
+                  value={cat}
+                  checked={category === cat}
+                  onChange={(e) => setCategory(e.target.value)}
+                /> {cat}
+              </div>
+            ))}
+
+            <h2 className="text-lg font-semibold mt-4 text-black">Price</h2>
+            <input
+              type="range"
+              min="0"
+              max="1000"
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+              className="w-full"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+            <p className="text-black">${price}</p>
+          </div>
+        </aside>
+
+        <section className="flex-1">
+          <h2 className="text-2xl font-bold mb-4 text-black">Product Listing</h2>
+          <ProductGrid products={filteredProducts} handleAddToCart={handleAddToCart} />
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      <Footer />
     </div>
   );
 }
