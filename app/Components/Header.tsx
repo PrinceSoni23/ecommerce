@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { FaSearch, FaShoppingCart, FaUserCircle } from 'react-icons/fa';
 // import { useCart } from '@/context/CartContext';
 import { useRouter } from 'next/navigation';

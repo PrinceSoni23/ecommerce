@@ -27,7 +27,7 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleAddToCart = (product: { title: any; }) => {
+  const handleAddToCart = (product: { title: any; }) => {  //eslint-disable-line @typescript-eslint/no-explicit-any
     alert(`Added ${product.title} to cart`);
   };
 
